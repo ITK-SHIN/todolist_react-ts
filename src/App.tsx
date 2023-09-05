@@ -22,6 +22,9 @@ function App() {
   };
 
   const handleSubmit = () => {
+    if (!text) {
+      return;
+    }
     console.log(Date.now());
     const newTodos = todos.concat({
       id: Date.now(),
@@ -52,6 +55,27 @@ function App() {
 
     setTodos(newTodos);
   };
+
+  const isTodoAllChecked = () => {
+    return todos.every((todo) => todo.isChecked);
+  };
+
+  const handleToggleAllClick = () => {
+    const isAllChecked = isTodoAllChecked();
+    console.log(isAllChecked);
+    const newTodos = todos.map((todo) => {
+      return {
+        ...todo,
+        isChecked: !isAllChecked,
+      };
+    });
+    setTodos(newTodos);
+  };
+
+  const handleRemoveAllClick = () => {
+    setTodos([]);
+  };
+
   return (
     <main className="App">
       <TodoHeader count={todos.filter((todo) => !todo.isChecked).length} />
@@ -61,7 +85,11 @@ function App() {
         onSubmit={handleSubmit}
       />
       <TodoListArea todoCount={todos.length}>
-        <TodoListTools />
+        <TodoListTools
+          onToggleAllClick={handleToggleAllClick}
+          onRemoveAllClick={handleRemoveAllClick}
+          isAllChecked={isTodoAllChecked()}
+        />
         <Divider />
         <TodoList
           todos={todos}
