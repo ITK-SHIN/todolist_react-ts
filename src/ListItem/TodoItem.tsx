@@ -4,10 +4,10 @@ import { IoIosRemoveCircleOutline } from "react-icons/io";
 
 interface TodoItemProps {
   text: string;
+  isChecked: boolean;
 }
 
 const TodoItem = (props: TodoItemProps) => {
-  console.log(styles);
   const isChecked = false;
   return (
     <li className={styles.container}>
@@ -15,7 +15,9 @@ const TodoItem = (props: TodoItemProps) => {
         className={[
           styles.checkIcon,
           `${
-            isChecked ? styles.checkedCircleIcon : styles.unCheckedCircleIcon
+            props.isChecked
+              ? styles.checkedCircleIcon
+              : styles.unCheckedCircleIcon
           }`,
         ].join(" ")}
       />

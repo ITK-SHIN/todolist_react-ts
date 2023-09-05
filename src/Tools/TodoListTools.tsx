@@ -3,7 +3,6 @@ import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 
 const TodoListTools = () => {
-  console.log(styles);
   return (
     <section className={styles.container}>
       <button className={styles.button}>
