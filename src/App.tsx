@@ -33,7 +33,11 @@ function App() {
   };
 
   const handleRemove = (id: number) => {
-    console.log("remove", id);
+    const newTodos = todos.filter((todo) => {
+      return todo.id !== id;
+    });
+
+    setTodos(newTodos);
   };
   const handleToggle = (id: number) => {
     const newTodos = todos.map((todo) => {
