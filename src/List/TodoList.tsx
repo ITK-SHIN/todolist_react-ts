@@ -1,26 +1,19 @@
 import TodoItem from "../ListItem/TodoItem";
-import { TodoType } from "../Todo/todoReducer";
+import { useTodoState } from "../Todo/TodoProvider";
 import styles from "./TodoList.module.css";
 
-interface TodoListProps {
-  todos: TodoType[];
-  onToggleClick: (id: number) => void;
-  onRemoveClick: (id: number) => void;
-}
-
-const TodoList = (props: TodoListProps) => {
+const TodoList = () => {
+  const todoState = useTodoState();
   return (
     <section>
       <ol className={styles.olContainer}>
-        {props.todos.map((todo, index) => {
+        {todoState.todos.map((todo, index) => {
           return (
             <TodoItem
               id={todo.id}
               text={todo.text}
               key={`${todo.id}_${index}`}
               isChecked={todo.isChecked}
-              onRemoveClick={props.onRemoveClick}
-              onToggleClick={props.onToggleClick}
             />
           );
         })}
