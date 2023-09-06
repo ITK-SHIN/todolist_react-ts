@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import "./App.css";
 import Divider from "./Divider/Divider";
 import TodoHeader from "./Header/TodoHeader";
@@ -6,6 +6,7 @@ import TodoInput from "./Input/TodoInput";
 import TodoList from "./List/TodoList";
 import TodoListTools from "./Tools/TodoListTools";
 import TodoListArea from "./List/TodoListArea";
+import todoInputReducer from "./Todo/todoInputReducer";
 
 export type TodoType = {
   id: number;
@@ -14,25 +15,31 @@ export type TodoType = {
 };
 
 function App() {
-  const [text, setText] = useState("");
+  const [inputState, inputDispatch] = useReducer(todoInputReducer, {
+    text: "",
+  });
   const [todos, setTodos] = useState<TodoType[]>([]);
 
   const handleTextChange = (text: string) => {
-    setText(text);
+    inputDispatch({
+      type: "change",
+      payload: text,
+    });
   };
 
   const handleSubmit = () => {
-    if (!text) {
+    if (!inputState.text) {
       return;
     }
-    console.log(Date.now());
     const newTodos = todos.concat({
       id: Date.now(),
-      text: text,
+      text: inputState.text,
       isChecked: false,
     });
     setTodos(newTodos);
-    setText("");
+    inputDispatch({
+      type: "clear",
+    });
   };
 
   const handleRemove = (id: number) => {
@@ -62,7 +69,6 @@ function App() {
 
   const handleToggleAllClick = () => {
     const isAllChecked = isTodoAllChecked();
-    console.log(isAllChecked);
     const newTodos = todos.map((todo) => {
       return {
         ...todo,
@@ -80,7 +86,7 @@ function App() {
     <main className="App">
       <TodoHeader count={todos.filter((todo) => !todo.isChecked).length} />
       <TodoInput
-        text={text}
+        text={inputState.text}
         onTextChange={handleTextChange}
         onSubmit={handleSubmit}
       />
